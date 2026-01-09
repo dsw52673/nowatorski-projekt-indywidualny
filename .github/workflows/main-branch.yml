@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-test-deploy:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,8 +17,15 @@ jobs:
           python-version: "3.9"
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run Tests
         run: pytest
+
+  publish-image:
+    needs: tests
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      image_name: ${{ github.repository }}
+      tag: latest
+    secrets: inherit
