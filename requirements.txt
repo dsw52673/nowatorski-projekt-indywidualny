@@ -3,3 +3,5 @@ uvicorn
 pytest
 httpx
 flake8
+sqlalchemy
+psycopg2-binary
