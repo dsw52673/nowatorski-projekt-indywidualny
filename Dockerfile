@@ -1,10 +1,16 @@
-FROM python:3.9-slim
+FROM python:3.9-slim as builder
 
 WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY --from=builder /install /usr/local
 
 COPY ./app ./app
 
